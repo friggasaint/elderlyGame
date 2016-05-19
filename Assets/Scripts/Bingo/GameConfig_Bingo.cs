@@ -6,6 +6,9 @@ public class GameConfig_Bingo : MonoBehaviour {
     public static int[] bingoArray = new int[25];
     public static bool[] checkArray = new bool[25];
     public static bool paused;
+    public float timer;
+    public static float timeleft;
+    private bool waitSip;
     int temp;
     bool numberFree;
     // Use this for initialization
@@ -13,6 +16,8 @@ public class GameConfig_Bingo : MonoBehaviour {
         //init
         numberFree = true;
         paused = false;
+        timeleft = timer;
+        waitSip = false;
 
         //Debug.Log(bingoArray.Length);
         // Create new set of Numbers
@@ -43,9 +48,17 @@ public class GameConfig_Bingo : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        timeleft -= Time.deltaTime;
+
         if (checkWinCondition()) {
             GameObject.Find("Button Win").GetComponent<TextMesh>().text = "Win Yes";
             //Debug.Log("Winner");
+        }
+
+        if (timeleft <= 0) {
+            transform.SendMessage("needSipFreeze");
+            waitSip = true;
+            paused = true;
         }
     }
 
@@ -90,5 +103,13 @@ public class GameConfig_Bingo : MonoBehaviour {
             win = true;
         }
         return win;
+    }
+
+    public void sendSipConformation() {
+        if (waitSip) {
+            waitSip = false;
+            paused = false;
+            timeleft = timer;
+            }
     }
 }

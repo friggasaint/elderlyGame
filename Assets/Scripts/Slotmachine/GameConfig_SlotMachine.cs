@@ -3,9 +3,12 @@ using System.Collections;
 
 public class GameConfig_SlotMachine : MonoBehaviour {
 
+    public int sipEarn;
     public static int credits;
     private int winCredits;
     private int reelsRunningCount;
+    private bool sipConformation;
+    private bool waitSip;
 
     // buttons
     private bool buttonStart;
@@ -39,12 +42,15 @@ public class GameConfig_SlotMachine : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        credits = 0;
+        credits = 5;
         winCredits = 0;
         reelsRunningCount = 0;
         buttonStart = false;
         buttonStop = false;
         checkWin = false;
+        sipConformation = false;
+        waitSip = false;
+        flushSlots();
         reel0 = transform.FindChild("Reel0").gameObject;
         reel1 = transform.FindChild("Reel1").gameObject;
         reel2 = transform.FindChild("Reel2").gameObject;
@@ -55,24 +61,36 @@ public class GameConfig_SlotMachine : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
+        //check if we got a sip
+        if (sipConformation) {
+            credits += sipEarn;
+            sipConformation = false;
+        }
+
         //check if we won something
         if (checkWin) {
             debugSlots();
             if (slotColName3.Equals(slotColName6) && slotColName6.Equals(slotColName9)) {
-                winCredits = 5;
+                if(winCredits< awardWin(slotColName3))
+                    winCredits = awardWin(slotColName3);
             } else if (slotColName4.Equals(slotColName7) && slotColName7.Equals(slotColName10)) {
-                winCredits = 5;
+                if (winCredits < awardWin(slotColName4))
+                    winCredits = awardWin(slotColName4);
             } else if (slotColName5.Equals(slotColName8) && slotColName8.Equals(slotColName11)) {
-                winCredits = 5;
+                if (winCredits < awardWin(slotColName5))
+                    winCredits = awardWin(slotColName5);
             } else if (slotColName3.Equals(slotColName7) && slotColName7.Equals(slotColName11)) {
-                winCredits = 5;
+                if (winCredits < awardWin(slotColName3))
+                    winCredits = awardWin(slotColName3);
             } else if (slotColName5.Equals(slotColName7) && slotColName7.Equals(slotColName9)) {
-                winCredits = 5;
+                if (winCredits < awardWin(slotColName5))
+                    winCredits = awardWin(slotColName5);
             }
 
             credits += winCredits;
             winCredits = 0;
             checkWin = false;
+            flushSlots();
         }
         //checks if game is currently running and buttons are pressed
 
@@ -106,9 +124,17 @@ public class GameConfig_SlotMachine : MonoBehaviour {
                 default:
                     break;
             }
-
-            // starting reels
+            
+            // starting new round
         } else if (reelsRunningCount == 0 && buttonStart) {
+            //check if there is credit left
+            if (credits <= 0) {
+                transform.SendMessage("needSipFreeze");
+                waitSip = true;
+            } else
+                credits--;
+
+            //starting reels
             //reel0.SendMessage("setReelActive", true);
             reel1.SendMessage("setReelActive", true);
             reel2.SendMessage("setReelActive", true);
@@ -206,4 +232,46 @@ public class GameConfig_SlotMachine : MonoBehaviour {
         Debug.Log(slotColName14);
     }
 
+    public void flushSlots() {
+        slotColName0  = "default";
+        slotColName1  = "default";
+        slotColName2  = "default";
+        slotColName3  = "default";
+        slotColName4  = "default";
+        slotColName5  = "default";
+        slotColName6  = "default";
+        slotColName7  = "default";
+        slotColName8  = "default";
+        slotColName9  = "default";
+        slotColName10 = "default";
+        slotColName11 = "default";
+        slotColName12 = "default";
+        slotColName13 = "default";
+        slotColName14 = "default";
+    }
+
+    private int awardWin(string symbol) {
+        int winnings = 1;
+        switch (symbol) {
+            case "diamond":
+                winnings = 5;
+                break;
+            case "goldbar":
+                winnings = 5;
+                break;
+            case "greenclover":
+                winnings = 50;
+                break;
+            default:
+                break;
+        }
+        return winnings;
+    }
+
+    public void sendSipConformation() {
+        if (waitSip) {
+            sipConformation = true;
+            waitSip = false;
+        }
+    }
 }
