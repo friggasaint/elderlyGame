@@ -30,7 +30,7 @@ public class Balloon : MonoBehaviour {
         StartCoroutine(KillOnAnimationEnd());
     }
     private IEnumerator KillOnAnimationEnd() {
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(.3f);
         Destroy(gameObject);
     }
 }

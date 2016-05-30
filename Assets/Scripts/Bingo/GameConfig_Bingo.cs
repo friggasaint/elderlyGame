@@ -51,7 +51,7 @@ public class GameConfig_Bingo : MonoBehaviour {
         timeleft -= Time.deltaTime;
 
         if (checkWinCondition()) {
-            GameObject.Find("Button Win").GetComponent<TextMesh>().text = "Win Yes";
+            GameObject.Find("Button Win").GetComponent<TextMesh>().text = "You have won!";
             //Debug.Log("Winner");
         }
 

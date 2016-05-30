@@ -36,27 +36,19 @@ public class MetaWearHandle : MonoBehaviour {
             //throw;
         }
         
-        if (javaMessage.Equals("nothing")) {
+        if (javaMessage.Equals("true")) {
             standing = false;
             //Debug.Log("standing = false");
         }
 
         //just took a sip
-        if (!standing && javaMessage.Equals("took a sip")) {
+        if (!standing && javaMessage.Equals("false")) {
             standing = true;
             freeze = false;
             transform.SendMessage("sendSipConformation");
             //Debug.Log("standing = true");
         }
 
-        //freeze game, need to sip
-        //if (score != 0 && score % 5 == 0 && !wasFreeze) {
-        //    freeze = true;
-        //    wasFreeze = true;
-        //}
-
-        //if (score % 5 == 4)
-        //    wasFreeze = false;
 
         //stop time while waiting for Sip
         if (freeze) {
@@ -69,12 +61,9 @@ public class MetaWearHandle : MonoBehaviour {
     void OnGUI() {
         if (freeze) {
             guiStyle.fontSize = 50;
-            GUI.contentColor = Color.black;
-            GUI.Button(new Rect((Screen.width - w) / 2, (Screen.height - h) / 2, 70, 30), stringToEdit, guiStyle);
+            GUI.Label(new Rect((Screen.width - w) / 2 - 100, (Screen.height - h) / 2, 70, 30), stringToEdit, guiStyle);
+            GUI.Box(new Rect((Screen.width - w) / 2 - 100, (Screen.height - h) / 2, 440, 60), new GUIContent(""));
         }
-
-        //GUI.Label(new Rect(100, 100, 200, 50), standing + " " + javaMessage);
-        //GUI.Label(new Rect(100, 200, 200, 50), freeze + " " + javaMessage);
     }
 
     public void  needSipFreeze() {
