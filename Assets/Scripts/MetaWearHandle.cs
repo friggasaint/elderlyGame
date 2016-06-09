@@ -60,9 +60,11 @@ public class MetaWearHandle : MonoBehaviour {
     }
     void OnGUI() {
         if (freeze) {
-            guiStyle.fontSize = 50;
-            GUI.Label(new Rect((Screen.width - w) / 2 - 100, (Screen.height - h) / 2, 70, 30), stringToEdit, guiStyle);
-            GUI.Box(new Rect((Screen.width - w) / 2 - 100, (Screen.height - h) / 2, 440, 60), new GUIContent(""));
+			
+            guiStyle.fontSize = 90;
+			guiStyle.normal.textColor = Color.red;
+            GUI.Label(new Rect((Screen.width - w) / 2 - 250, (Screen.height - h) - 50, 70, 30), stringToEdit, guiStyle);
+			//GUI.Box(new Rect((Screen.width - w) / 2 - 250, (Screen.height - h) / 2, 750, 90), new GUIContent(""));
         }
     }
 

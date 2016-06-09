@@ -19,7 +19,7 @@ public class GameConfig_Slice : MonoBehaviour {
         jc = new AndroidJavaClass("de.tum.far.receiver.MyReceiver");
         // We call our java class function to create our MyReceiver java object
         //jc.CallStatic("createInstance");
-
+		guiStyle = new GUIStyle();
     }
 	
 	// Update is called once per frame
@@ -36,12 +36,12 @@ public class GameConfig_Slice : MonoBehaviour {
             Debug.Log("standing = true");
         }
 
-        if( score != 0 && score%5 == 0 && !wasFreeze){
+        if( score != 0 && score%20 == 0 && !wasFreeze){
             freeze = true;
             wasFreeze = true;
         }
 
-        if (score%5 == 4)
+        if (score%20 == 19)
             wasFreeze = false;
 
         if (freeze) {
@@ -53,9 +53,11 @@ public class GameConfig_Slice : MonoBehaviour {
 	}
     void OnGUI() {
         if (freeze) {
-            guiStyle.fontSize = 50;
-            GUI.Label(new Rect((Screen.width - w) / 2 - 100, (Screen.height - h) / 2, 70, 30), stringToEdit, guiStyle);
-            GUI.Box(new Rect((Screen.width - w) / 2 - 100, (Screen.height - h) / 2, 440, 60), new GUIContent(""));
+
+			guiStyle.fontSize = 90;
+			guiStyle.normal.textColor = Color.red;
+			GUI.Label(new Rect((Screen.width - w) / 2 - 250, (Screen.height - h) / 2, 70, 30), stringToEdit, guiStyle);
+			//GUI.Box(new Rect((Screen.width - w) / 2 - 250, (Screen.height - h) / 2, 750, 90), new GUIContent(""));
         }
     }
 }

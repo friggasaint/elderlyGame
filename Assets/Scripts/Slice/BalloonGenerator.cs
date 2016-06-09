@@ -14,7 +14,7 @@ public class BalloonGenerator : MonoBehaviour {
     void Update() {
         time += Time.deltaTime;
         if (time >= speed) {
-            Instantiate(prefab, new Vector3(Random.Range(-8.0F, 8.0F), -5.5f, 0), Quaternion.identity);
+            Instantiate(prefab, new Vector3(Random.Range(-8.0F, 8.0F), -4.0f, 0), Quaternion.identity);
             time =- speed;
         }
     }

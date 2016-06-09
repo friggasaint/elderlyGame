@@ -42,7 +42,7 @@ public class GameConfig_SlotMachine : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        credits = 5;
+		credits = sipEarn;
         winCredits = 0;
         reelsRunningCount = 0;
         buttonStart = false;
